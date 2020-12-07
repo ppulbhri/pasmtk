@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kombinasi</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body{
+			font-family: arial;
+			background-color: #eaeaea;
+		}
+		fieldset{
+			background-color: #fff;
+			margin-bottom: 10px;
+		}
+		legend{
+			font-weight: 700;
+			background-color: #fff3a8;
+			padding: 3px;
+		}
+		button{
+			padding: 5px 10px;
+			border: 0;
+			background-color: #e8cd20;
+		}
+	</style>
+</head>
+<body>
+	<fieldset>
+		<legend>Faktorial</legend>
+		<input type="number" id="f" placeholder="Nilai ..!">
+		<button id="hitung_faktorial">Hitung</button>
+		<h1 id="hasil_faktorial">0</h1>
+	</fieldset>
+
+	<fieldset>
+		<legend>Kombinasi</legend>
+		<input type="number" id="n" placeholder="Nilai n">
+		<input type="number" id="r" placeholder="Nilai r">
+		<button id="hitung_kombinasi">Hitung</button>
+		<h1 id="hasil_kombinasi">0</h1>
+	</fieldset>
+
+	<fieldset>
+		<legend>Simpangan</legend>
+		<input type="text" id="simpangan" placeholder="Nilai x">
+		<button id="hitung_simpangan">Hitung</button>
+		<h1>RR : <span id="hasil_rr">0</span> | <span id="rr1">0</span>/<span id="rr2">0</span></h1>
+		<h1>SR : <span id="hasil_srr">0</span> | <span id="srr1">0</span>/<span id="srr2">0</span></h1>
+		<h1>SV : <span id="hasil_sv">0</span> | <span id="sv1">0</span>/<span id="sv2">0</span></h1>
+		<h1>SB : <span id="hasil_sb">0</span> | &radic;<span id="sb1">0</span>/<span id="sb2">0</span></h1>
+		<p>*note : <b>rr</b> = rata-rata | <b>sr</b> = simpangan rata-rata | <b>sv</b> = simpangan varian | <b>sb</b> = simpangan baku</p>
+	</fieldset>
+	
+	<fieldset>
+		<legend>Permutasi Unsur Beda</legend>
+		<input type="number" id="n_pub" placeholder="Nilai n">
+		<input type="number" id="r_pub" placeholder="Nilai r">
+		<button id="hitung_permutasi">Hitung</button>
+		<h1 id="hasil_permutasi">0</h1>
+	</fieldset>
+	
+	<fieldset>
+		<legend>Permutasi Unsur Sama</legend>
+		<input type="number" id="n_pus" placeholder="Nilai n">
+		<input type="text" id="r_pus" placeholder="Nilai a,b,c...">
+		<button id="hitung_permutasi2">Hitung</button>
+		<h1 id="hasil_permutasi2">0</h1>
+	</fieldset>
+
+
+	<script>
+		const n = document.getElementById('n');
+		const r = document.getElementById('r');
+		const btnHitung = document.getElementById('hitung_kombinasi');
+		const hasil = document.getElementById('hasil_kombinasi');
+
+		btnHitung.addEventListener('click', function(){
+			let hasil_n = 1;
+			for (var i = n.value; i > 0; i--) {
+				hasil_n *= i;
+			}
+
+			let hasil_r = 1;
+			for (var i = r.value; i > 0; i--) {
+				hasil_r *= i;
+			}
+
+			let hasil_nr = 1;
+			let nr = n.value - r.value;
+			for (var i = nr; i > 0; i--) {
+				hasil_nr *= i;
+			}
+
+			let c = hasil_n / (hasil_nr * hasil_r);
+
+			hasil.innerText = c;
+		});
+
+		document.getElementById('hitung_simpangan').addEventListener('click', function(){
+			let sp = document.getElementById('simpangan').value.split(',');
+			let a = 0;
+			let b = 0;
+			let srr = 0;
+			let sv = 0;
+			for (var i = 0; i < sp.length; i++) {
+				a++;
+				b += Number(sp[i]);
+			}
+			let r = b/a;
+			for (var j = 0; j < sp.length; j++) {
+				if (Number(sp[j]) > r) {
+					srr += Number(sp[j]) - r;
+					sv += (Number(sp[j]) - r) * (Number(sp[j]) - r);
+				}
+				else if (Number(sp[j]) < r) {
+					srr += r - Number(sp[j]);
+					sv += (r - Number(sp[j])) * (r - Number(sp[j]));
+				}
+				else{
+					srr += 0;
+					sv += 0;
+				}
+			}
+			document.getElementById('hasil_rr').innerText = b/a;
+			document.getElementById('rr1').innerText = b;
+			document.getElementById('rr2').innerText = a;
+			document.getElementById('hasil_srr').innerText = srr/a;
+			document.getElementById('srr1').innerText = srr;
+			document.getElementById('srr2').innerText = a;
+			document.getElementById('hasil_sv').innerText = sv/a;
+			document.getElementById('sv1').innerText = sv;
+			document.getElementById('sv2').innerText = a;
+			document.getElementById('hasil_sb').innerText = Math.sqrt(sv/a);
+			document.getElementById('sb1').innerText = sv;
+			document.getElementById('sb2').innerText = a;
+		});
+
+		document.getElementById('hitung_faktorial').addEventListener('click', function(){
+			let hasil_faktorial = 1;
+			for (var i = document.getElementById('f').value; i > 0; i--) {
+				hasil_faktorial *= i;
+			}
+			document.getElementById('hasil_faktorial').innerText = hasil_faktorial;
+		});
+
+		document.getElementById('hitung_permutasi').addEventListener('click', function(){
+			const n = document.getElementById('n_pub');
+			const r = document.getElementById('r_pub');
+			let hasil_n = 1;
+			for (var i = n.value; i > 0; i--) {
+				hasil_n *= i;
+			}
+
+			let hasil_nr = 1;
+			let nr = n.value - r.value;
+			for (var i = nr; i > 0; i--) {
+				hasil_nr *= i;
+			}
+
+			let c = hasil_n / hasil_nr;
+
+			document.getElementById('hasil_permutasi').innerText = c;
+		});
+
+		document.getElementById('hitung_permutasi2').addEventListener('click', function(){
+			const n = document.getElementById('n_pus');
+			const r = document.getElementById('r_pus').value.split(',');
+			let hasil_n = 1;
+			let hasil_r = 1;
+			for (var i = n.value; i > 0; i--) {
+				hasil_n *= i;
+			}
+
+			for (var i = 0; i < r.length; i++) {
+				for (var j = Number(r[i]); j > 0; j--) {
+					hasil_r *= j;
+				}
+			}
+
+			let c = hasil_n / hasil_r;
+
+			document.getElementById('hasil_permutasi2').innerText = c;
+		});
+	</script>
+	<!-- 8,4,3,4,6,7,4,4 -->
+</body>
+</html>
